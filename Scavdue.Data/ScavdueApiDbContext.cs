@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
-using Scavdue.Data.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Scavdue.Core.Models;
 using Scavdue.Data.ModelsConfigurations;
 
 namespace Scavdue.Data;

@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Scavdue.Core.Interfaces.Models;
 
-namespace Scavdue.Data.Models
+namespace Scavdue.Core.Models
 {
     public partial class Population : Entity
     {
