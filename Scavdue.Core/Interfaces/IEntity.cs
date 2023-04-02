@@ -1,4 +1,4 @@
-﻿namespace Scavdue.Data.Interfaces;
+﻿namespace Scavdue.Core.Interfaces;
 
 public interface IEntity
 {
