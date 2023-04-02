@@ -1,6 +1,4 @@
-﻿using Scavdue.Core.Interfaces.Models;
-
-namespace Scavdue.Core.Models
+﻿namespace Scavdue.Core.Models
 {
     public partial class UnitObjectPolygon : Entity
     {
