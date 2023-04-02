@@ -36,7 +36,7 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
 
     public async Task<TEntity> GetAsync(int id)
     {
-        var entity = await SetWithIncludes.FirstOrDefaultAsync(p => p.Id == id);
+        var entity = await _set.FirstOrDefaultAsync(p => p.Id == id);
 
         return entity;
     }

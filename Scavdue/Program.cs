@@ -1,5 +1,6 @@
 
 using Scavdue.Data;
+using Scavdue.Extensions;
 
 namespace Scavdue
 {
@@ -14,6 +15,8 @@ namespace Scavdue
             // Add services to the container.
 
             builder.Services.AddControllers();
+            builder.Services.AddRepositories();
+            builder.Services.AddServices();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
