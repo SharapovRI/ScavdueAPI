@@ -49,4 +49,22 @@ public abstract class BaseRepository<TEntity> : IBaseRepository<TEntity> where T
 
         return updatedEntity.Entity;
     }
+
+    public async Task<IEnumerable<TEntity>> GetList(ISpecification<TEntity> spec)
+    {
+        // fetch a Queryable that includes all expression-based includes
+        var queryableResultWithIncludes = spec.Includes
+            .Aggregate(_set.AsQueryable(),
+                (current, include) => current.Include(include));
+
+        // modify the IQueryable to include any string-based include statements
+        var secondaryResult = spec.IncludeStrings
+            .Aggregate(queryableResultWithIncludes,
+                (current, include) => current.Include(include));
+
+        // return the result of the query using the specification's criteria expression
+        return secondaryResult
+            .Where(spec.Criteria)
+            .AsEnumerable();
+    }
 }

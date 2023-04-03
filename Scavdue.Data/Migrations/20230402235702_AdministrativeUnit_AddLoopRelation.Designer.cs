@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Scavdue.Data;
@@ -11,9 +12,11 @@ using Scavdue.Data;
 namespace Scavdue.Data.Migrations
 {
     [DbContext(typeof(ScavdueApiDbContext))]
-    partial class ScavdueApiDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230402235702_AdministrativeUnit_AddLoopRelation")]
+    partial class AdministrativeUnit_AddLoopRelation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -40,7 +43,7 @@ namespace Scavdue.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int?>("ParentAdministrativeUnitId")
+                    b.Property<int>("ParentAdministrativeUnitId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id")
@@ -238,7 +241,8 @@ namespace Scavdue.Data.Migrations
                     b.HasOne("Scavdue.Core.Models.AdministrativeUnit", "ParentAdministrativeUnit")
                         .WithMany("ChildAdministrativeUnits")
                         .HasForeignKey("ParentAdministrativeUnitId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Country");
 

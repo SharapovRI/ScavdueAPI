@@ -18,8 +18,19 @@ namespace Scavdue.Data.ModelsConfigurations
             builder.Property(e => e.Name)
                 .IsRequired();
 
+            builder.Property(e => e.AdministrativeLevel)
+                .IsRequired();
+
+            builder.Property(e => e.ParentAdministrativeUnitId)
+                .IsRequired(false);
+
             builder.Property(e => e.CountryId)
                 .IsRequired();
+
+            builder.HasOne(p => p.ParentAdministrativeUnit)
+                .WithMany(p => p.ChildAdministrativeUnits)
+                .HasForeignKey(p => p.ParentAdministrativeUnitId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             builder.HasOne(d => d.Country)
                 .WithMany(p => p.AdministrativeUnits)
