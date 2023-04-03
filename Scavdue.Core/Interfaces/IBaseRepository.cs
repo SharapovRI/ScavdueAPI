@@ -9,5 +9,7 @@
         Task<TEntity> UpdateAsync(TEntity entity);
 
         Task<TEntity> DeleteAsync(int id);
+
+        Task<IEnumerable<TEntity>> GetList(ISpecification<TEntity> spec);
     }
 }

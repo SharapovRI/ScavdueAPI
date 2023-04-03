@@ -1,4 +1,6 @@
 
+using Microsoft.AspNetCore.Hosting;
+using Scavdue.Business.Extensions;
 using Scavdue.Data;
 using Scavdue.Extensions;
 
@@ -9,6 +11,9 @@ namespace Scavdue
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddAutoMapper(typeof(Program))
+                .AddBusinessMapper();
 
             builder.Services.AddScoped<ScavdueApiDbContext>();
 
@@ -33,11 +38,15 @@ namespace Scavdue
 
             app.UseHttpsRedirection();
 
+            app.UseRouting();
+
             app.UseAuthorization();
 
 
-            app.MapControllers();
-
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
             app.Run();
         }
     }
