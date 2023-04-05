@@ -1,4 +1,5 @@
 ﻿using Scavdue.Business.Models.Response;
+using Scavdue.Core.Models;
 
 namespace Scavdue.Business.Interfaces;
 

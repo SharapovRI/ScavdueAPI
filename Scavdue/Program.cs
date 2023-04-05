@@ -22,6 +22,7 @@ namespace Scavdue
             builder.Services.AddControllers();
             builder.Services.AddRepositories();
             builder.Services.AddServices();
+            builder.Services.AddAdapters();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

@@ -16,7 +16,7 @@ public partial class AdministrativeUnit : Entity
 
     public virtual ICollection<UnitObject> UnitObjects { get; } = new List<UnitObject>();
 
-    public virtual ICollection<AdministrativeUnitPolygon> AdministrativeUnitPolygons { get; } = new List<AdministrativeUnitPolygon>();
+    public virtual ICollection<AdministrativeUnitPolygon> AdministrativeUnitPolygons { get; set; } = new List<AdministrativeUnitPolygon>();
 
     public virtual ICollection<Population> Populations { get; } = new List<Population>();
 

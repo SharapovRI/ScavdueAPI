@@ -10,5 +10,9 @@ public class UnitWithCoordinatesResponseModel
 
     public int AdministrativeLevel { get; set; }
 
+    public string CountryName { get; set; } = string.Empty;
+
+    public string ISO { get; set; } = string.Empty;
+
     public virtual ICollection<UnitPolygonResponseModel> Polygons { get; } = new List<UnitPolygonResponseModel>();
 }

@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="MappingProfiles\**" />
+    <Content Remove="MappingProfiles\**" />
+    <EmbeddedResource Remove="MappingProfiles\**" />
+    <None Remove="MappingProfiles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="7.0.4" />
@@ -25,11 +32,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Scavdue.Business\Scavdue.Business.csproj" />
     <ProjectReference Include="..\Scavdue.Data\Scavdue.Data.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-    <Folder Include="MappingProfiles\" />
+    <ProjectReference Include="..\Scavdue.OpenStreetMaps.Adapter\Scavdue.OpenStreetMaps.Adapter.csproj" />
   </ItemGroup>
 
 </Project>

@@ -8,5 +8,6 @@ public sealed class CountryWithCoordinatesSpecification : BaseSpecification<Admi
         : base(p => p.Name == unitName && p.AdministrativeLevel == 2)
     {
         AddInclude(p => p.AdministrativeUnitPolygons);
+        AddInclude(p => p.Country);
     }
 }
