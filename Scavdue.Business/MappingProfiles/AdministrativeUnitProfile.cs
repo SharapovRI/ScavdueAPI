@@ -18,7 +18,11 @@ public class AdministrativeUnitProfile : Profile
 
         CreateMap<AdministrativeUnit, UnitWithCoordinatesResponseModel>()
             .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id.ToString()))
-            .ForMember(dest => dest.Polygons, act => act.MapFrom(src => src.AdministrativeUnitPolygons));
+            .ForMember(dest => dest.Polygons, act => act.MapFrom(src => src.AdministrativeUnitPolygons))
+            .ForMember(dest => dest.CountryName, act => act.MapFrom(src => src.Country.Name))
+            .ForMember(dest => dest.ISO, act => act.MapFrom(src => src.Country.Iso3166));
+
+
 
         CreateMap<AdministrativeUnitPolygon, UnitPolygonResponseModel>();
 

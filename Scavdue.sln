@@ -5,6 +5,7 @@ VisualStudioVersion = 17.5.33516.290
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scavdue", "Scavdue\Scavdue.csproj", "{0831A7E5-08FD-472C-829A-CA513174293C}"
 	ProjectSection(ProjectDependencies) = postProject
+		{2380779C-F8AD-494C-98DA-FE53EACB13A8} = {2380779C-F8AD-494C-98DA-FE53EACB13A8}
 		{7B755F78-C667-48B4-84D0-4A77D6869A73} = {7B755F78-C667-48B4-84D0-4A77D6869A73}
 		{C49A2259-C3A2-4478-B38F-069C49253C62} = {C49A2259-C3A2-4478-B38F-069C49253C62}
 	EndProjectSection
@@ -19,7 +20,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scavdue.Data", "Scavdue.Dat
 		{B865EBEA-E5F8-4B98-A7E9-49DD66EE6A2C} = {B865EBEA-E5F8-4B98-A7E9-49DD66EE6A2C}
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scavdue.Core", "Scavdue.Core\Scavdue.Core.csproj", "{B865EBEA-E5F8-4B98-A7E9-49DD66EE6A2C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Scavdue.Core", "Scavdue.Core\Scavdue.Core.csproj", "{B865EBEA-E5F8-4B98-A7E9-49DD66EE6A2C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scavdue.OpenStreetMaps.Adapter", "Scavdue.OpenStreetMaps.Adapter\Scavdue.OpenStreetMaps.Adapter.csproj", "{2380779C-F8AD-494C-98DA-FE53EACB13A8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,6 +46,10 @@ Global
 		{B865EBEA-E5F8-4B98-A7E9-49DD66EE6A2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B865EBEA-E5F8-4B98-A7E9-49DD66EE6A2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B865EBEA-E5F8-4B98-A7E9-49DD66EE6A2C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2380779C-F8AD-494C-98DA-FE53EACB13A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2380779C-F8AD-494C-98DA-FE53EACB13A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2380779C-F8AD-494C-98DA-FE53EACB13A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2380779C-F8AD-494C-98DA-FE53EACB13A8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
