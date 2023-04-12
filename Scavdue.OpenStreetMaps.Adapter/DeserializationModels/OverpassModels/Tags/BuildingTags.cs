@@ -5,19 +5,25 @@ namespace Scavdue.OpenStreetMaps.Adapter.DeserializationModels.OverpassModels.Ta
 {
     public class BuildingTags : ITags
     {
-        [JsonProperty("addrhousenumber")]
+        [JsonProperty("addr:housenumber")]
         public string Addrhousenumber { get; set; }
 
-        [JsonProperty("addrstreet")]
+        [JsonProperty("addr:street")]
         public string Addrstreet { get; set; }
 
         [JsonProperty("building")]
         public string Building { get; set; }
 
-        [JsonProperty("building:levels")]
-        public string Buildinglevels { get; set; }
+        [JsonProperty("amenity")]
+        public string Amenity { get; set; }
 
-        [JsonProperty("name")]
+        [JsonProperty("emergency")]
+        public string Emergency { get; set; }
+
+        [JsonProperty("building:levels")]
+        public string BuildingLevels { get; set; }
+
+        [JsonProperty("name:ru")]
         public string Name { get; set; }
     }
 }

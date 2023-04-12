@@ -12,6 +12,6 @@
 
         public virtual UnitObjectType UnitObjectType { get; set; } = null!;
 
-        public virtual ICollection<UnitObjectPolygon> UnitObjectPolygons { get; } = new List<UnitObjectPolygon>();
+        public virtual ICollection<UnitObjectPolygon> UnitObjectPolygons { get; set; } = new List<UnitObjectPolygon>();
     }
 }

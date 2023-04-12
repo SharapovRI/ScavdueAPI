@@ -10,10 +10,12 @@ namespace Scavdue.Controllers
     public class AdministrativeUnitController : ControllerBase
     {
         private readonly IAdministrativeUnitService _administrativeUnitService;
+        private readonly IUnitObjectsService _unitObjectsService;
 
-        public AdministrativeUnitController(IAdministrativeUnitService administrativeUnitService)
+        public AdministrativeUnitController(IAdministrativeUnitService administrativeUnitService, IUnitObjectsService unitObjectsService)
         {
             _administrativeUnitService = administrativeUnitService;
+            _unitObjectsService = unitObjectsService;
         }
 
         [HttpGet("/AdministrativeUnits/{unitName}")]
@@ -34,6 +36,13 @@ namespace Scavdue.Controllers
         public async Task<IActionResult> GetChildUnits(int parentId)
         {
             var units = await _administrativeUnitService.GetChildsAsync(parentId);
+            return Ok(units);
+        }
+
+        [HttpGet("/AdministrativeUnits/{unitId:int}/UnitObjects")]
+        public async Task<IActionResult> GetUnitObjects(int unitId)
+        {
+            var units = await _unitObjectsService.GetUnitObjects(unitId);
             return Ok(units);
         }
     }

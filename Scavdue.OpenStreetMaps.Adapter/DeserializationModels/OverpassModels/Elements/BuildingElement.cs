@@ -8,7 +8,24 @@ namespace Scavdue.OpenStreetMaps.Adapter.DeserializationModels.OverpassModels.El
         [JsonProperty("center")]
         public Center Center { get; set; }
 
-        [JsonProperty("tags")]
-        public TTags Tags { get; set; }
+        [JsonProperty("geometry")]
+        public Geometry[] Geometry { get; set; }
+
+        [JsonProperty("members")]
+        public Polygon[] Polygons { get; set; }
+
+        [JsonProperty("bounds")]
+        public Bounds Bounds { get; set; }
+
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("lat")]
+        public float Lat { get; set; }
+
+        [JsonProperty("lon")]
+        public float Lon { get; set; }
+
+        public TTags tags { get; set; }
     }
 }

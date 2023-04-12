@@ -16,9 +16,9 @@ namespace Scavdue.Data.ModelsConfigurations
             builder.Property(e => e.Id)
                 .IsRequired();
 
-            builder.Property(e => e.CenterLong);
+            builder.Property(e => e.CenterLong).IsRequired(false);
 
-            builder.Property(e => e.CenterLat);
+            builder.Property(e => e.CenterLat).IsRequired(false);
 
             builder.Property(e => e.Coordinates)
                 .IsRequired();

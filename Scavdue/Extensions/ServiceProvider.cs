@@ -8,6 +8,7 @@ public static class ServiceProvider
     public static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<IAdministrativeUnitService, AdministrativeUnitService>();
+        services.AddScoped<IUnitObjectsService, UnitObjectsService>();
 
         return services;
     }

@@ -17,7 +17,7 @@ namespace Scavdue.Data.ModelsConfigurations
                 .IsRequired();
 
             builder.Property(e => e.Name)
-                .IsRequired();
+                .IsRequired(false);
 
             builder.HasOne(p => p.AdministrativeUnit)
                 .WithMany(p => p.UnitObjects)

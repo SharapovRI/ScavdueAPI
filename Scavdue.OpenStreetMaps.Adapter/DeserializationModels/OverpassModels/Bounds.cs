@@ -1,10 +1,19 @@
-﻿namespace Scavdue.OpenStreetMaps.Adapter.DeserializationModels.OverpassModels
+﻿using Newtonsoft.Json;
+
+namespace Scavdue.OpenStreetMaps.Adapter.DeserializationModels.OverpassModels
 {
     public class Bounds
     {
-        public float minlat { get; set; }
-        public float minlon { get; set; }
-        public float maxlat { get; set; }
-        public float maxlon { get; set; }
+        [JsonProperty("minlat")]
+        public float MinLat { get; set; }
+
+        [JsonProperty("minlon")]
+        public float MinLon { get; set; }
+
+        [JsonProperty("maxlat")]
+        public float MaxLat { get; set; }
+
+        [JsonProperty("maxlon")]
+        public float MaxLon { get; set; }
     }
 }

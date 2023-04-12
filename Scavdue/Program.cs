@@ -37,6 +37,8 @@ namespace Scavdue
                 app.UseSwaggerUI();
             }
 
+            app.UseErrorHandler();
+
             app.UseHttpsRedirection();
 
             app.UseRouting();
