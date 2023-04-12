@@ -9,4 +9,13 @@ public class UnitObjectRepository : BaseRepository<UnitObject>, IUnitObjectRepos
         : base(scavdueApiDbContext)
     {
     }
+
+    public async Task<List<UnitObject>> CreateRangeAsync(List<UnitObject> entities)
+    {
+        await _set.AddRangeAsync(entities);
+
+        await _context.SaveChangesAsync();
+
+        return entities;
+    }
 }

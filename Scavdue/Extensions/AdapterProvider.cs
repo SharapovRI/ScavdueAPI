@@ -9,6 +9,7 @@ public static class AdapterProvider
     public static IServiceCollection AddAdapters(this IServiceCollection services)
     {
         services.AddScoped<IAdministrativeUnitAdapter, AdministrativeUnitAdapter>();
+        services.AddScoped<IUnitObjectAdapter, UnitObjectAdapter>();
 
         return services;
     }
