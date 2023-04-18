@@ -41,7 +41,7 @@ public class UnitObjectsService : IUnitObjectsService
             return unit.UnitObjects.ToList();
         }
 
-        var buildingClasses = await _unitObjectClassRepository.GetList(new UnitObjectClassesWithTypes());
+        var buildingClasses = await _unitObjectClassRepository.GetList(new UnitObjectClassesWithTypesSpecification());
 
         var unitObjects = await _unitObjectAdapter.GetUnitObjects(unit.Name, unit.AdministrativeLevel, buildingClasses.ToList());
         foreach (var unitObject in unitObjects)
@@ -51,5 +51,44 @@ public class UnitObjectsService : IUnitObjectsService
         await _unitObjectRepository.CreateRangeAsync(unitObjects);
 
         return unitObjects;
+    }
+
+    public async Task<List<UnitObject>> GetUnitObjectsAdmin()
+    {
+        var units = await _administrativeUnitRepository.GetList(new UnitCitiesSpecification(4));
+
+        if (units is null)
+        {
+            throw new Exception("There is no unit with this ID in the database");
+        }
+
+        var buildingClasses = await _unitObjectClassRepository.GetList(new UnitObjectClassesWithTypesSpecification());
+
+        try
+        {
+            List<UnitObject> objects = new();
+            foreach (var unit in units.ToList())
+            {
+                var unitObjects = await _unitObjectAdapter.GetUnitObjects(unit.Name, unit.AdministrativeLevel, buildingClasses?.ToList());
+                foreach (var unitObject in unitObjects)
+                {
+                    unitObject.AdministrativeUnit = unit;
+                }
+
+                objects.AddRange(unitObjects);
+            }
+
+            await _unitObjectRepository.CreateRangeAsync(objects);
+
+            return objects;
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
+
+        return null;
     }
 }

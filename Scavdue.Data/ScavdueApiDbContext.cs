@@ -1,10 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Scavdue.Core.Interfaces;
 using Scavdue.Core.Models;
 using Scavdue.Data.ModelsConfigurations;
 
 namespace Scavdue.Data;
 
-public partial class ScavdueApiDbContext : DbContext
+public partial class ScavdueApiDbContext : DbContext, IDatabaseContext
 {
     public ScavdueApiDbContext()
     {

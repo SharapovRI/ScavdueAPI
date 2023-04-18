@@ -24,6 +24,9 @@ namespace Scavdue.Data.ModelsConfigurations
             builder.Property(e => e.ParentAdministrativeUnitId)
                 .IsRequired(false);
 
+            builder.Property(e => e.Place)
+                .IsRequired(false);
+
             builder.Property(e => e.CountryId)
                 .IsRequired();
 
