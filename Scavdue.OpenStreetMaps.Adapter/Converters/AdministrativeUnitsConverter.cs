@@ -47,18 +47,19 @@ public static class AdministrativeUnitsConverter
             AdministrativeLevel = tags.AdminLevel,
             Name = tags.Name,
             CountryId = countryId,
-            ParentAdministrativeUnitId = parentId
+            ParentAdministrativeUnitId = parentId,
+            Place = tags.Place
         };
 
         Population population = new()
         {
             AdministrativeUnit = unit,
-            NumberOfPeople = tags.Population,
+            NumberOfPeople = tags.Population is null ? 0 : Convert.ToInt32(tags.Population.Replace(" ", "")),
             Date = DateOnly.FromDateTime(DateTime.UtcNow.Date)
         };
 
         unit.Populations.Add(population);
-        unit.AdministrativeUnitPolygons = GetPolygonsFromGeoJson(coordinates, unit);
+        unit.AdministrativeUnitPolygons = GetPolygonsFromGeoJson(coordinates, unit) ?? new List<AdministrativeUnitPolygon>();
 
         return unit;
     }
@@ -70,11 +71,11 @@ public static class AdministrativeUnitsConverter
 
     private static List<AdministrativeUnitPolygon> GetPolygonsFromGeoJson(Place place, AdministrativeUnit unit)
     {
-        return (place?.Geojson?.Coordinates).Select(coordinates => 
+        return (place?.Geojson?.Coordinates)?.Select(coordinates =>
             new AdministrativeUnitPolygon()
             {
-                AdministrativeUnit = unit, 
-                CenterLat = Convert.ToSingle(place?.Lat?.Replace(".", ",")), 
+                AdministrativeUnit = unit,
+                CenterLat = Convert.ToSingle(place?.Lat?.Replace(".", ",")),
                 CenterLong = Convert.ToSingle(place?.Lon?.Replace(".", ",")),
                 Coordinates = coordinates?.ToString().Replace("\r", "").Replace("\n", "").Replace(" ", "")
             }).ToList();

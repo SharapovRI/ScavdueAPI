@@ -39,21 +39,43 @@ public class AdministrativeUnitAdapter : BaseAdapter, IAdministrativeUnitAdapter
         while (!isChildFinded && admin_level < PropertyRestrictions.MAX_ADMIN_LEVEL)
         {
             admin_level++;
-            string requestUrl = URLs.OVERPASS_API_URL + $"[out:json];area[\"name:ru\"=\"{parentName.Replace(" ", "+")}\"];(rel[admin_level={admin_level}](area););out;";
+            string requestUrl = URLs.OVERPASS_API_URL +
+                                $"[out:json];area[\"name:ru\"=\"{parentName.Replace(" ", "+")}\"];(rel[admin_level={admin_level}](area););out;";
             if (admin_level < 9) // только для Беларуси, там баг что при запросе возвращает часть Польши
             {
-                requestUrl = URLs.OVERPASS_API_URL + $"[out:json];area[\"name:ru\"=\"{parentName.Replace(" ", "+")}\"];(rel[admin_level={admin_level}][\"addr:country\" = \"BY\"](area););out;";
+                requestUrl = URLs.OVERPASS_API_URL +
+                             $"[out:json];area[\"name:ru\"=\"{parentName.Replace(" ", "+")}\"];(rel[admin_level={admin_level}][\"addr:country\" = \"BY\"](area););out;";
+                if (admin_level == 6)
+                {
+                    requestUrl = URLs.OVERPASS_API_URL +
+                                 $"[out:json];area[\"name:ru\"=\"{parentName.Replace(" ", "+")}\"];(rel[admin_level={admin_level}][place=city][\"addr:country\" = \"BY\"](area););out;";
+                }
+
+                if (admin_level == 8)
+                {
+                    requestUrl = URLs.OVERPASS_API_URL +
+                                 $"[out:json];area[\"name:ru\"=\"{parentName.Replace(" ", "+")}\"];(rel[admin_level={admin_level}][place=town][\"addr:country\" = \"BY\"](area););out;";
+                }
             }
+
             string response = await DoRequest(requestUrl);
-            var rootobject = JsonConvert.DeserializeObject<Rootobject<UnitElement<ChildUnitTags>, ChildUnitTags>>(response);
-            if (rootobject.Elements.Length < 1) continue;
+            var rootobject =
+                JsonConvert.DeserializeObject<Rootobject<UnitElement<ChildUnitTags>, ChildUnitTags>>(response);
+            if (rootobject.Elements is null || rootobject.Elements.Length < 1) continue;
             else isChildFinded = true;
             responseObject = rootobject;
         }
 
-        foreach (var item in responseObject.Elements)
+        if (responseObject.Elements is null)
         {
-            var coordinates = await GetUnitCoordinates(item.Tags.Name);
+            return new List<AdministrativeUnit>();
+        }
+        
+        responseObject.Elements = responseObject.Elements?.Where(b => b.Tags?.Name != null).ToArray();
+
+        foreach (var item in responseObject?.Elements)
+        {
+            var coordinates = await GetUnitCoordinates(item.Tags?.Name);
             item.NominatimRoot = coordinates;
         }
 
@@ -64,9 +86,16 @@ public class AdministrativeUnitAdapter : BaseAdapter, IAdministrativeUnitAdapter
 
     private static async Task<Place> GetUnitCoordinates(string unitName)
     {
-        string requestUrl = URLs.NOMINATIM_API_URL + $"q={unitName}&polygon_geojson=1&format=jsonv2";
-        string response = await DoRequest(requestUrl);
-        var rootobject = JsonConvert.DeserializeObject<List<Place>>(response);
-        return rootobject[0];
+        try
+        {
+            string requestUrl = URLs.NOMINATIM_API_URL + $"q={unitName}&polygon_geojson=1&format=jsonv2";
+            string response = await DoRequest(requestUrl);
+            var rootobject = JsonConvert.DeserializeObject<List<Place>>(response);
+            return rootobject[0];
+        }
+        catch (Exception e)
+        {
+            return new Place();
+        }
     }
 }

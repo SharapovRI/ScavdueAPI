@@ -1,6 +1,7 @@
 
 using Microsoft.AspNetCore.Hosting;
 using Scavdue.Business.Extensions;
+using Scavdue.Core.Interfaces;
 using Scavdue.Data;
 using Scavdue.Extensions;
 

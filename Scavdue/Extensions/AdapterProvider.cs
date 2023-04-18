@@ -1,4 +1,5 @@
 ﻿using Scavdue.Core.Interfaces;
+using Scavdue.Data;
 using Scavdue.Data.Repositories;
 using Scavdue.OpenStreetMaps.Adapter.Adapters;
 
@@ -10,6 +11,7 @@ public static class AdapterProvider
     {
         services.AddScoped<IAdministrativeUnitAdapter, AdministrativeUnitAdapter>();
         services.AddScoped<IUnitObjectAdapter, UnitObjectAdapter>();
+        services.AddScoped<IDatabaseContext, ScavdueApiDbContext>();
 
         return services;
     }

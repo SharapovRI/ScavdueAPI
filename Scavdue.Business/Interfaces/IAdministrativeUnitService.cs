@@ -10,4 +10,7 @@ public interface IAdministrativeUnitService
     Task<UnitWithCoordinatesResponseModel> GetCountryAsync(string unitName);
 
     Task<IList<UnitWithCoordinatesResponseModel>> GetChildsAsync(int parentId);
+
+    Task<string> AdminComplexAdminUnits(string countryName);
+    Task<string> TestUnits();
 }

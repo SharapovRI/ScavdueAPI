@@ -18,7 +18,7 @@ namespace Scavdue.OpenStreetMaps.Adapter.DeserializationModels.OverpassModels.Ta
         public string Name { get; set; }
 
         [JsonProperty("population")]
-        public int Population { get; set; }
+        public string Population { get; set; }
 
         [JsonProperty("place")]
         public string Place { get; set; }

@@ -2,9 +2,9 @@
 
 namespace Scavdue.Core.Specifications;
 
-public class UnitObjectClassesWithTypes : BaseSpecification<UnitObjectClass>
+public class UnitObjectClassesWithTypesSpecification : BaseSpecification<UnitObjectClass>
 {
-    public UnitObjectClassesWithTypes()
+    public UnitObjectClassesWithTypesSpecification()
         : base(b => true)
     {
         AddInclude(p => p.UnitObjectTypes);

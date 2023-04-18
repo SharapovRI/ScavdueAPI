@@ -6,6 +6,8 @@ public partial class AdministrativeUnit : Entity
 
     public int AdministrativeLevel { get; set; }
 
+    public string? Place { get; set; }
+
     public int? ParentAdministrativeUnitId { get; set; }
 
     public virtual AdministrativeUnit? ParentAdministrativeUnit { get; set; } = null!;
