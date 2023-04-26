@@ -23,4 +23,6 @@ public partial class AdministrativeUnit : Entity
     public virtual ICollection<Population> Populations { get; } = new List<Population>();
 
     public virtual ICollection<AdministrativeUnit> ChildAdministrativeUnits { get; set; } = new List<AdministrativeUnit>();
+
+    public virtual ICollection<LifeIndex> LifeIndexes { get; set; } = new List<LifeIndex>();
 }
