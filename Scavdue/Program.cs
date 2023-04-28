@@ -16,7 +16,7 @@ namespace Scavdue
             builder.Services.AddAutoMapper(typeof(Program))
                 .AddBusinessMapper();
 
-            builder.Services.AddScoped<ScavdueApiDbContext>();
+            builder.Services.AddTransient<ScavdueApiDbContext>();
 
             // Add services to the container.
 

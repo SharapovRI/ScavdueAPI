@@ -8,7 +8,7 @@ public partial class EvaluationCriteria : Entity
 
     public int EvaluationCriteriaTypeId { get; set; }
 
-    public virtual EvaluationCriteriaType EvaluationCriteriaType { get; set; } = null!;
+    public virtual EvaluationCriteriaType? EvaluationCriteriaType { get; set; } = null!;
 
     public int LifeIndexId { get; set; }
 

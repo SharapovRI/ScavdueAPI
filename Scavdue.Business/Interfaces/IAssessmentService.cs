@@ -2,5 +2,5 @@
 
 public interface IAssessmentService
 {
-    
+    Task<List<int>> DoComplexAssessment();
 }

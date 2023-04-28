@@ -16,16 +16,18 @@ public class AdministrativeUnitService : IAdministrativeUnitService
     private readonly IAdministrativeUnitRepository _administrativeUnitRepository;
     private readonly IAdministrativeUnitAdapter _administrativeUnitAdapter;
     private readonly IUnitObjectsService _unitObjectsService;
+    private readonly IAssessmentService _assessmentService;
     private readonly DbContext _context;
 
     public AdministrativeUnitService(IMapper mapper, IAdministrativeUnitRepository administrativeUnitRepository, 
-        IAdministrativeUnitAdapter administrativeUnitAdapter, IUnitObjectsService unitObjectsService, IDatabaseContext context)
+        IAdministrativeUnitAdapter administrativeUnitAdapter, IUnitObjectsService unitObjectsService, IAssessmentService assessmentService, IDatabaseContext context)
     {
         _mapper = mapper;
         _administrativeUnitRepository = administrativeUnitRepository;
         _administrativeUnitAdapter = administrativeUnitAdapter;
         _unitObjectsService = unitObjectsService;
         _context = (DbContext)context;
+        _assessmentService = assessmentService;
     }
 
     public async Task<IList<UnitByNameResponseModel>> GetUnitListByNameAsync(string unitName)
@@ -85,7 +87,7 @@ public class AdministrativeUnitService : IAdministrativeUnitService
 
     public async Task<string> AdminComplexAdminUnits(string countryName)
     {
-        try
+        /*try
         {
             var country = await AdminGetCountryAsync(countryName);
             List<AdministrativeUnit> units = await _administrativeUnitAdapter.GetChildUnits(country.Id, country.Name,
@@ -122,7 +124,9 @@ public class AdministrativeUnitService : IAdministrativeUnitService
         {
             await transaction.RollbackAsync();
             throw new Exception("Transaction is canceled!");
-        }
+        }*/
+        await _assessmentService.DoComplexAssessment();
+
         return "Complex updating complete successful";
     }
 
