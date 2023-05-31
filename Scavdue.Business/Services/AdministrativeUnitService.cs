@@ -149,10 +149,10 @@ public class AdministrativeUnitService : IAdministrativeUnitService
         await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
-            //var objects = await _unitObjectsService.GetUnitObjectsAdmin();
+            var objects = await _assessmentService.DoComplexAssessment();
             var a = 0;
         }
-        catch (Exception)
+        catch (Exception e)
         {
             await transaction.RollbackAsync();
             throw new Exception("Transaction is canceled!");

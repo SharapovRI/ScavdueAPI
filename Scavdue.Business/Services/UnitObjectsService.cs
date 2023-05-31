@@ -106,6 +106,7 @@ public class UnitObjectsService : IUnitObjectsService
             {
                 buildings = objectDict,
                 unitId = unitId,
+                unitName = unitObjects.First().AdministrativeUnit.Name
             };
 
             return result;

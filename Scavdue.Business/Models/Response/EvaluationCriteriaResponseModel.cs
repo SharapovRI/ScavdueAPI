@@ -13,6 +13,6 @@ namespace Scavdue.Business.Models.Response
 
         public string Description { get; set; } = string.Empty;
 
-        public int EvaluationCriteriaTypeName { get; set; }
+        public string EvaluationCriteriaTypeName { get; set; } = string.Empty;
     }
 }

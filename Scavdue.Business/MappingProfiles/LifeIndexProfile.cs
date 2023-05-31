@@ -14,6 +14,9 @@ public class LifeIndexProfile : Profile
     public LifeIndexProfile()
     {
         CreateMap<ICollection<LifeIndex>, LifeIndexResponseModel>()
-            .ForMember(dest => dest.EvaluationCriterias, act => act.MapFrom(src => src.OrderBy(p => p.ReceivingDate).LastOrDefault()));
+            .ForMember(dest => dest.EvaluationCriterias, act => act.MapFrom(src => src.OrderBy(p => p.ReceivingDate).LastOrDefault().EvaluationCriterias));
+
+        CreateMap<LifeIndex, LifeIndexResponseModel>()
+            .ForMember(dest => dest.EvaluationCriterias, act => act.MapFrom(src => src.EvaluationCriterias));
     }
 }
