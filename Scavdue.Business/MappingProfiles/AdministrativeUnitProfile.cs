@@ -29,7 +29,7 @@ public class AdministrativeUnitProfile : Profile
             .ForMember(dest => dest.CountryName, act => act.MapFrom(src => src.Country.Name))
             .ForMember(dest => dest.ISO, act => act.MapFrom(src => src.Country.Iso3166))
             .ForMember(dest => dest.Place, act => act.MapFrom(src => src.Place ?? ""))
-            .ForMember(dest => dest.LifeIndex, act => act.MapFrom(src => src.LifeIndexes.OrderBy(p => p.ReceivingDate).LastOrDefault()));
+            .ForMember(dest => dest.LifeIndex, act => act.MapFrom(src => src.LifeIndexes));
 
 
         CreateMap<AdministrativeUnitPolygon, UnitPolygonResponseModel>();

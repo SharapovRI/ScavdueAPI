@@ -9,6 +9,6 @@ namespace Scavdue.Business.Models.Response
 {
     public class LifeIndexResponseModel
     {
-        public virtual ICollection<EvaluationCriteriaResponseModel> EvaluationCriterias { get; set; } = new List<EvaluationCriteriaResponseModel>();
+        public ICollection<EvaluationCriteriaResponseModel> EvaluationCriterias { get; set; } = new List<EvaluationCriteriaResponseModel>();
     }
 }

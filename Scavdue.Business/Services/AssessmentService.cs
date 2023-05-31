@@ -68,7 +68,7 @@ public class AssessmentService : IAssessmentService
         var lifeIndex = new LifeIndex()
         {
             AdministrativeUnitId = unit.Id,
-            ReceivingDate = DateTime.Now,
+            ReceivingDate = DateTime.UtcNow,
             EvaluationCriterias = new List<EvaluationCriteria>(),
         };
 
@@ -83,8 +83,8 @@ public class AssessmentService : IAssessmentService
         var criterias = await Task.WhenAll(tasks.ToArray());
         lifeIndex.EvaluationCriterias = criterias;
 
-        //var index = await _lifeIndexRepository.CreateAsync(lifeIndex);
-        LifeIndex index = null;
+        var index = await _lifeIndexRepository.CreateAsync(lifeIndex);
+        //LifeIndex index = null;
         
         return index;
     }
@@ -115,21 +115,31 @@ public class AssessmentService : IAssessmentService
         var result = grades.Average();
 
         EvaluationCriteriaType? evalType = evalTypes.FirstOrDefault(b => b.Name == "Medicine");
+        bool evalTypeExists = true;
         if (evalType == null)
         {
             evalType = new();
             evalType.Name = "Medicine";
+            evalTypeExists = false;
         }
 
         EvaluationCriteria evalCriteria = new()
         {
-            EvaluationCriteriaType = evalType,
             Value = result,
             Description = $"Ambulance stations amount grade: {ambulanceGrade}\n" +
                           $"Clinics amount grade: {clinicsGrade}\n" +
                           $"Hospitals amount grade: {hospitalsGrade}\n" +
                           $"Pharmacy amount grade: {pharmacysGrade}",
         };
+
+        if (evalTypeExists)
+        {
+            evalCriteria.EvaluationCriteriaTypeId = evalType.Id;
+        }
+        else
+        {
+            evalCriteria.EvaluationCriteriaType = evalType;
+        }
 
         return evalCriteria;
     }

@@ -12,6 +12,7 @@ namespace Scavdue.Core.Specifications
         public UnitObjectsWithClassesSpecification(int unitId)
             : base(p => p.AdministrativeUnitId == unitId)
         {
+            AddInclude(p => p.AdministrativeUnit);
             AddInclude(p => p.UnitObjectType);
             AddInclude(p => p.UnitObjectType.UnitObjectClass);
         }
