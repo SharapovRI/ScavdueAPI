@@ -45,18 +45,15 @@ public class AdministrativeUnitAdapter : BaseAdapter, IAdministrativeUnitAdapter
             {
                 requestUrl = URLs.OVERPASS_API_URL +
                              $"[out:json];area[\"name:ru\"=\"{parentName.Replace(" ", "+")}\"];(rel[admin_level={admin_level}][\"addr:country\" = \"BY\"](area););out;";
-                if (admin_level == 6)
+                if (admin_level > 4)
                 {
                     requestUrl = URLs.OVERPASS_API_URL +
-                                 $"[out:json];area[\"name:ru\"=\"{parentName.Replace(" ", "+")}\"];(rel[admin_level={admin_level}][place=city][\"addr:country\" = \"BY\"](area););out;";
+                                 $"[out:json];area[\"name:ru\"=\"{parentName.Replace(" ", "+")}\"];(" +
+                                 $"rel[admin_level={admin_level}][place=city][\"addr:country\" = \"BY\"](area)->.city;" +
+                                 $"rel[admin_level={admin_level}][place=town][\"addr:country\" = \"BY\"](area)->.town;" +
+                                 $");out;";
                 }
-
-                if (admin_level == 8)
-                {
-                    requestUrl = URLs.OVERPASS_API_URL +
-                                 $"[out:json];area[\"name:ru\"=\"{parentName.Replace(" ", "+")}\"];(rel[admin_level={admin_level}][place=town][\"addr:country\" = \"BY\"](area););out;";
-                }
-            }
+            }//TODO переписать цикл, тк могут быть city 8 уровня, и др
 
             string response = await DoRequest(requestUrl);
             var rootobject =
@@ -75,7 +72,50 @@ public class AdministrativeUnitAdapter : BaseAdapter, IAdministrativeUnitAdapter
 
         foreach (var item in responseObject?.Elements)
         {
-            var coordinates = await GetUnitCoordinates(item.Tags?.Name);
+            var coordinates = await GetUnitCoordinates(item.Tags?.Name, iso);
+            item.NominatimRoot = coordinates;
+        }
+
+        var result = AdministrativeUnitsConverter.ConvertToAdministrativeUnit(id, countryId, responseObject);
+
+        return result;
+    }
+
+    public async Task<List<AdministrativeUnit>> GetCountryCities(int id, string countryName, int admin_level, int countryId, string iso)
+    {
+        if (admin_level < PropertyRestrictions.MIN_ADMIN_LEVEL || admin_level >= PropertyRestrictions.MAX_ADMIN_LEVEL)
+        {
+            return null;
+        }
+
+        Rootobject<UnitElement<ChildUnitTags>, ChildUnitTags> responseObject = new();
+
+        if (admin_level < PropertyRestrictions.MAX_ADMIN_LEVEL)
+        {
+            admin_level++;
+            string requestUrl = URLs.OVERPASS_API_URL +
+                                $"[out:json];area[\"name:ru\"=\"{countryName.Replace(" ", "+")}\"];(" +
+                                $"rel[place=city][\"addr:country\" = \"{iso}\"](area)->.city;" +
+                                $"rel[place=town][\"addr:country\" = \"{iso}\"](area)->.town;" +
+                                $");out;";
+            
+
+            string response = await DoRequest(requestUrl);
+            var rootobject =
+                JsonConvert.DeserializeObject<Rootobject<UnitElement<ChildUnitTags>, ChildUnitTags>>(response);
+            responseObject = rootobject;
+        }
+
+        if (responseObject.Elements is null)
+        {
+            return new List<AdministrativeUnit>();
+        }
+
+        responseObject.Elements = responseObject.Elements?.Where(b => b.Tags?.Name != null && b.Tags.AdminLevel < 8).ToArray(); //TODO ограничение
+
+        foreach (var item in responseObject?.Elements)
+        {
+            var coordinates = await GetUnitCoordinates(item.Tags?.Name, iso);
             item.NominatimRoot = coordinates;
         }
 
@@ -89,6 +129,21 @@ public class AdministrativeUnitAdapter : BaseAdapter, IAdministrativeUnitAdapter
         try
         {
             string requestUrl = URLs.NOMINATIM_API_URL + $"q={unitName}&polygon_geojson=1&format=jsonv2";
+            string response = await DoRequest(requestUrl);
+            var rootobject = JsonConvert.DeserializeObject<List<Place>>(response);
+            return rootobject[0];
+        }
+        catch (Exception e)
+        {
+            return new Place();
+        }
+    }
+
+    private static async Task<Place> GetUnitCoordinates(string unitName, string countryCode)
+    {
+        try
+        {
+            string requestUrl = URLs.NOMINATIM_API_URL + $"q={unitName}&countrycodes={countryCode}&polygon_geojson=1&format=jsonv2";
             string response = await DoRequest(requestUrl);
             var rootobject = JsonConvert.DeserializeObject<List<Place>>(response);
             return rootobject[0];

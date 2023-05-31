@@ -2,10 +2,10 @@
 
 namespace Scavdue.Core.Specifications;
 
-public sealed class UnitCitiesSpecification : BaseSpecification<AdministrativeUnit>
+public class UnitCitiesSpecification : BaseSpecification<AdministrativeUnit>
 {
-    public UnitCitiesSpecification(int minAdminLevel)
-        : base(p => p.AdministrativeLevel >= minAdminLevel && p.Place != null)
+    public UnitCitiesSpecification(int countryId, int minAdminLevel)
+        : base(p => p.CountryId == countryId && p.AdministrativeLevel >= minAdminLevel && p.Place != null)
     {
     }
 }

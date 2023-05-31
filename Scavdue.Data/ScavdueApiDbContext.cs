@@ -38,6 +38,12 @@ public partial class ScavdueApiDbContext : DbContext, IDatabaseContext
 
     public virtual DbSet<EvaluationCriteriaType> EvaluationCriteriaTypes { get; set; }
 
+    public virtual DbSet<User> Users { get; set; }
+
+    public virtual DbSet<Role> Roles { get; set; }
+
+    public virtual DbSet<RefreshToken> RefreshTokens { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=ScavdueAPI_DB;Username=postgres;Password=PostgreSQL");
@@ -55,6 +61,9 @@ public partial class ScavdueApiDbContext : DbContext, IDatabaseContext
         modelBuilder.ApplyConfiguration(new LifeIndexConfiguration());
         modelBuilder.ApplyConfiguration(new EvaluationCriteriaTypeConfiguration());
         modelBuilder.ApplyConfiguration(new EvaluationCriteriaConfiguration());
+        modelBuilder.ApplyConfiguration(new RoleConfiguration());
+        modelBuilder.ApplyConfiguration(new UserConfiguration());
+        modelBuilder.ApplyConfiguration(new RefreshTokenConfiguration());
 
         OnModelCreatingPartial(modelBuilder);
     }

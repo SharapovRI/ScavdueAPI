@@ -58,11 +58,11 @@ public class AssessmentService : IAssessmentService
         return null;
     }
 
-    public async Task<int> DoUnitAssessment(AdministrativeUnit unit)
+    public async Task<LifeIndex?> DoUnitAssessment(AdministrativeUnit unit)
     {
         if (!unit.Populations.Any(p => p.NumberOfPeople > 0))
         {
-            return 0;
+            return null;
         }
 
         var lifeIndex = new LifeIndex()
@@ -75,17 +75,18 @@ public class AssessmentService : IAssessmentService
         IEnumerable<EvaluationCriteriaType?> evalTypes = await _evaluationCriteriaTypeRepository.GetList(new EvaluationCriteriaTypeSpecification());
         var tasks = new List<Task<EvaluationCriteria>>();
 
-        var a = DoMedicineAssessment(unit.UnitObjects.Where(p => p.UnitObjectType.UnitObjectClass.Name is "Health" or "EmergencyServices").ToList(),
+        var medicineAssessment = DoMedicineAssessment(unit.UnitObjects.Where(p => p.UnitObjectType.UnitObjectClass.Name is "Health" or "EmergencyServices").ToList(),
             unit.Populations.Where(p => p.NumberOfPeople > 0).OrderBy(p => p.Date).Last(),
             evalTypes);
-        tasks.Add(a);
+        tasks.Add(medicineAssessment);
 
         var criterias = await Task.WhenAll(tasks.ToArray());
         lifeIndex.EvaluationCriterias = criterias;
 
-        /////////////_lifeIndexRepository.CreateAsync(lifeIndex);
+        //var index = await _lifeIndexRepository.CreateAsync(lifeIndex);
+        LifeIndex index = null;
         
-        return 0;
+        return index;
     }
 
     public static async Task<EvaluationCriteria> DoMedicineAssessment(List<UnitObject> objects, Population population, IEnumerable<EvaluationCriteriaType?> evalTypes)

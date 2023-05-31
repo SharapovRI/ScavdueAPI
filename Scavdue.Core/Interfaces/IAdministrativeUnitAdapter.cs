@@ -7,4 +7,6 @@ public interface IAdministrativeUnitAdapter
     Task<AdministrativeUnit> GetCountry(string country);
 
     Task<List<AdministrativeUnit>> GetChildUnits(int id, string parentName, int admin_level, int countryId, string countryName);
+
+    Task<List<AdministrativeUnit>> GetCountryCities(int id, string countryName, int admin_level, int countryId, string iso);
 }

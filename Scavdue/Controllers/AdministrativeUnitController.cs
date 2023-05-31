@@ -25,6 +25,20 @@ namespace Scavdue.Controllers
             return Ok(units);
         }
 
+        [HttpGet("/AdministrativeUnits/Country/{countryId}/CityList")]
+        public async Task<IActionResult> GetCityList(int countryId)
+        {
+            var units = await _administrativeUnitService.GetCitiesList(countryId);
+            return Ok(units);
+        }
+
+        [HttpGet("/AdministrativeUnits/{unitId:int}/LifeIndex")]
+        public async Task<IActionResult> GetUnitLifeIndex(int unitId)
+        {
+            var unit = await _administrativeUnitService.GetUnitLifeIndex(unitId);
+            return Ok(unit);
+        }
+
         [HttpGet("/AdministrativeUnits/Country/{unitName}")]
         public async Task<IActionResult> GetCountryUnit(string unitName)
         {
