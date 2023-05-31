@@ -25,11 +25,11 @@ public static class UnitObjectConverter
             unitobjectType = new UnitObjectType()
             {
                 Name = building.tags?.Building ?? building.tags?.Amenity ?? building.tags?.Emergency,
-                UnitObjectClass = buildingClass
+                UnitObjectClassId = buildingClass.Id
             };
             buildingClass.UnitObjectTypes.Add(unitobjectType);
         }
-        unitObject.UnitObjectType = unitobjectType;
+        unitObject.UnitObjectTypeId = unitobjectType.Id;
 
         unitObject.UnitObjectPolygons = GetPolygonsFromGeoJson(building, unitObject);
 

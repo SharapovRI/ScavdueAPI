@@ -53,9 +53,9 @@ public class UnitObjectsService : IUnitObjectsService
         return unitObjects;
     }
 
-    public async Task<List<UnitObject>> GetUnitObjectsAdmin()
+    public async Task<List<UnitObject>> GetUnitObjectsAdmin(int countryId)
     {
-        var units = await _administrativeUnitRepository.GetList(new UnitCitiesSpecification(4));
+        var units = await _administrativeUnitRepository.GetList(new UnitCitiesSpecification(countryId, 4));
 
         if (units is null)
         {
@@ -72,7 +72,7 @@ public class UnitObjectsService : IUnitObjectsService
                 var unitObjects = await _unitObjectAdapter.GetUnitObjects(unit.Name, unit.AdministrativeLevel, buildingClasses?.ToList());
                 foreach (var unitObject in unitObjects)
                 {
-                    unitObject.AdministrativeUnit = unit;
+                    unitObject.AdministrativeUnitId = unit.Id;
                 }
 
                 objects.AddRange(unitObjects);
@@ -87,6 +87,28 @@ public class UnitObjectsService : IUnitObjectsService
         {
             Console.WriteLine(e);
             throw;
+        }
+
+        return null;
+    }
+
+    public async Task<object> GetBuildingClassCount(int unitId)
+    {
+        var unitObjects = await _unitObjectRepository.GetList(new UnitObjectsWithClassesSpecification(unitId));
+
+        if (unitObjects is not null)
+        {
+            var objectDict = unitObjects
+                        .GroupBy(p => p.UnitObjectType.UnitObjectClass.Name)
+                        .Select(g => new { Class = g.Key, Count = g.Count() });
+
+            object result = new
+            {
+                buildings = objectDict,
+                unitId = unitId,
+            };
+
+            return result;
         }
 
         return null;

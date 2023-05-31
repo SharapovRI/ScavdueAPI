@@ -5,5 +5,6 @@ namespace Scavdue.Business.Interfaces;
 public interface IUnitObjectsService
 {
     Task<List<UnitObject>> GetUnitObjects(int unitId);
-    Task<List<UnitObject>> GetUnitObjectsAdmin();
+    Task<List<UnitObject>> GetUnitObjectsAdmin(int countryId);
+    Task<object> GetBuildingClassCount(int unitId);
 }

@@ -13,6 +13,12 @@ namespace Scavdue
         {
             var builder = WebApplication.CreateBuilder(args);
 
+            builder.Services.AddCors(options => options.AddPolicy("123123", builder => builder
+                .WithOrigins("https://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod())
+            );
+
             builder.Services.AddAutoMapper(typeof(Program))
                 .AddBusinessMapper();
 
@@ -43,6 +49,11 @@ namespace Scavdue
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors(builder => builder.WithOrigins("https://localhost:3000")
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowAnyOrigin());
 
             app.UseAuthorization();
 

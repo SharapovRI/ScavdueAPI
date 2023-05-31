@@ -7,6 +7,7 @@ using Scavdue.Core.Models;
 using Scavdue.Core.Specifications;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics.Metrics;
 
 namespace Scavdue.Business.Services;
 
@@ -17,10 +18,17 @@ public class AdministrativeUnitService : IAdministrativeUnitService
     private readonly IAdministrativeUnitAdapter _administrativeUnitAdapter;
     private readonly IUnitObjectsService _unitObjectsService;
     private readonly IAssessmentService _assessmentService;
+    private readonly ILifeIndexRepository _lifeIndexRepository;
     private readonly DbContext _context;
 
-    public AdministrativeUnitService(IMapper mapper, IAdministrativeUnitRepository administrativeUnitRepository, 
-        IAdministrativeUnitAdapter administrativeUnitAdapter, IUnitObjectsService unitObjectsService, IAssessmentService assessmentService, IDatabaseContext context)
+    public AdministrativeUnitService(IMapper mapper, 
+        IAdministrativeUnitRepository administrativeUnitRepository, 
+        IAdministrativeUnitAdapter administrativeUnitAdapter, 
+        IUnitObjectsService unitObjectsService, 
+        IAssessmentService assessmentService, 
+        ILifeIndexRepository lifeIndexRepository,
+        IDatabaseContext context
+        )
     {
         _mapper = mapper;
         _administrativeUnitRepository = administrativeUnitRepository;
@@ -28,6 +36,7 @@ public class AdministrativeUnitService : IAdministrativeUnitService
         _unitObjectsService = unitObjectsService;
         _context = (DbContext)context;
         _assessmentService = assessmentService;
+        _lifeIndexRepository = lifeIndexRepository;
     }
 
     public async Task<IList<UnitByNameResponseModel>> GetUnitListByNameAsync(string unitName)
@@ -40,6 +49,18 @@ public class AdministrativeUnitService : IAdministrativeUnitService
         var units = await _administrativeUnitRepository.GetList(new UnitWithParentSpecification(unitName));
         var result = _mapper.Map<IList<UnitByNameResponseModel>> (units.ToList());
         return result;
+    }
+
+    public async Task<IList<UnitWithCoordinatesResponseModel>> GetCitiesList(int countryId)
+    {
+        if (countryId == null)
+        {
+            throw new Exception("Bad request");
+        }
+
+        var units = await _administrativeUnitRepository.GetList(new UnitCitiesWithCoordinatesSpecification(countryId, 4));
+
+        return _mapper.Map<IList<UnitWithCoordinatesResponseModel>>(units);
     }
 
     public async Task<UnitWithCoordinatesResponseModel> GetCountryAsync(string unitName)
@@ -56,10 +77,23 @@ public class AdministrativeUnitService : IAdministrativeUnitService
             return _mapper.Map<UnitWithCoordinatesResponseModel>(unit.FirstOrDefault());
         }
 
-        var country = await _administrativeUnitAdapter.GetCountry(unitName);
-        country = await CreateAsync(country);
+        return null;
 
-        return _mapper.Map<UnitWithCoordinatesResponseModel>(country);
+        //var country = await _administrativeUnitAdapter.GetCountry(unitName);
+        //country = await CreateAsync(country);
+
+        //return _mapper.Map<UnitWithCoordinatesResponseModel>(country);
+    }
+
+    public async Task<UnitWithLifeIndexResponseModel> GetUnitLifeIndex(int unitId)
+    {
+        var units = await _administrativeUnitRepository.GetList(new UnitWithLifeIndexSpecification(unitId));
+        if (units != null && units.Any())
+        {
+            return _mapper.Map<UnitWithLifeIndexResponseModel>(units.First());
+        }
+
+        return null;
     }
 
     public async Task<IList<UnitWithCoordinatesResponseModel>> GetChildsAsync(int parentId)
@@ -87,45 +121,25 @@ public class AdministrativeUnitService : IAdministrativeUnitService
 
     public async Task<string> AdminComplexAdminUnits(string countryName)
     {
-        /*try
-        {
-            var country = await AdminGetCountryAsync(countryName);
-            List<AdministrativeUnit> units = await _administrativeUnitAdapter.GetChildUnits(country.Id, country.Name,
-                country.AdministrativeLevel, country.Country.Id, country.Country.Iso3166);
-
-            units = await CreateAsync(units);
-            do
-            {
-                List<AdministrativeUnit> childUnits = new();
-                foreach (var unit in units)
-                {
-                    var results = await _administrativeUnitAdapter.GetChildUnits(unit.Id, unit.Name,
-                        unit.AdministrativeLevel, unit.Country.Id, unit.Country.Iso3166);
-                    if (results is null) continue;;
-                    results = await CreateAsync(results);
-                    childUnits.AddRange(results);
-                }
-
-                units = childUnits;
-            } while (units.Count > 0);
-        }
-        catch (Exception ex)
-        {
-            var a = 0;
-        }
-
         await using var transaction = await _context.Database.BeginTransactionAsync();
+
+        var country = await AdminGetCountryAsync(countryName);
+        List<AdministrativeUnit> units = await _administrativeUnitAdapter.GetCountryCities(country.Id, country.Name,
+            country.AdministrativeLevel, country.Country.Id, country.Country.Iso3166);
+
+        units = await CreateAsync(units);
+
         try
         {
-            var objects = await _unitObjectsService.GetUnitObjectsAdmin();
+            var objects = await _unitObjectsService.GetUnitObjectsAdmin(country.Country.Id);
             var a = 0;
         }
         catch (Exception)
         {
             await transaction.RollbackAsync();
             throw new Exception("Transaction is canceled!");
-        }*/
-        await _assessmentService.DoComplexAssessment();
+        }
+        //await _assessmentService.DoComplexAssessment();
 
         return "Complex updating complete successful";
     }
@@ -135,7 +149,7 @@ public class AdministrativeUnitService : IAdministrativeUnitService
         await using var transaction = await _context.Database.BeginTransactionAsync();
         try
         {
-            var objects = await _unitObjectsService.GetUnitObjectsAdmin();
+            //var objects = await _unitObjectsService.GetUnitObjectsAdmin();
             var a = 0;
         }
         catch (Exception)

@@ -20,8 +20,16 @@ public class AdministrativeUnitProfile : Profile
             .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id.ToString()))
             .ForMember(dest => dest.Polygons, act => act.MapFrom(src => src.AdministrativeUnitPolygons))
             .ForMember(dest => dest.CountryName, act => act.MapFrom(src => src.Country.Name))
-            .ForMember(dest => dest.ISO, act => act.MapFrom(src => src.Country.Iso3166));
+            .ForMember(dest => dest.CountryId, act => act.MapFrom(src => src.Country.Id))
+            .ForMember(dest => dest.ISO, act => act.MapFrom(src => src.Country.Iso3166))
+            .ForMember(dest => dest.Place, act => act.MapFrom(src => src.Place ?? ""));
 
+        CreateMap<AdministrativeUnit, UnitWithLifeIndexResponseModel>()
+            .ForMember(dest => dest.Id, act => act.MapFrom(src => src.Id.ToString()))
+            .ForMember(dest => dest.CountryName, act => act.MapFrom(src => src.Country.Name))
+            .ForMember(dest => dest.ISO, act => act.MapFrom(src => src.Country.Iso3166))
+            .ForMember(dest => dest.Place, act => act.MapFrom(src => src.Place ?? ""))
+            .ForMember(dest => dest.LifeIndex, act => act.MapFrom(src => src.LifeIndexes.OrderBy(p => p.ReceivingDate).LastOrDefault()));
 
 
         CreateMap<AdministrativeUnitPolygon, UnitPolygonResponseModel>();

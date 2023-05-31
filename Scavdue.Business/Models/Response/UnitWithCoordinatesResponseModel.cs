@@ -12,6 +12,10 @@ public class UnitWithCoordinatesResponseModel
 
     public string CountryName { get; set; } = string.Empty;
 
+    public int CountryId { get; set; }
+
+    public string Place { get; set; }
+
     public string ISO { get; set; } = string.Empty;
 
     public virtual ICollection<UnitPolygonResponseModel> Polygons { get; } = new List<UnitPolygonResponseModel>();
