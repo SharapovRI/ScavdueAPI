@@ -54,6 +54,11 @@ namespace Scavdue.Data.ModelsConfigurations
                 .WithOne(p => p.AdministrativeUnit)
                 .HasForeignKey(p => p.AdministrativeUnitId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            builder.HasMany(p => p.LifeIndexes)
+                .WithOne(p => p.AdministrativeUnit)
+                .HasForeignKey(p => p.AdministrativeUnitId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

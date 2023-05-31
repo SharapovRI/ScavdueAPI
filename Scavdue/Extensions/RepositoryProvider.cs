@@ -15,6 +15,9 @@ public static class RepositoryProvider
         services.AddScoped<IUnitObjectPolygonRepository, UnitObjectPolygonRepository>();
         services.AddScoped<IUnitObjectRepository, UnitObjectRepository>();
         services.AddScoped<IUnitObjectTypeRepository, UnitObjectTypeRepository>();
+        services.AddScoped<IEvaluationCriteriaTypeRepository, EvaluationCriteriaTypeRepository>();
+        services.AddScoped<IEvaluationCriteriaRepository, EvaluationCriteriaRepository>();
+        services.AddScoped<ILifeIndexRepository, LifeIndexRepository>();
 
         return services;
     }
