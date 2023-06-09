@@ -92,7 +92,6 @@ public class AdministrativeUnitAdapter : BaseAdapter, IAdministrativeUnitAdapter
 
         if (admin_level < PropertyRestrictions.MAX_ADMIN_LEVEL)
         {
-            admin_level++;
             string requestUrl = URLs.OVERPASS_API_URL +
                                 $"[out:json];area[\"name:ru\"=\"{countryName.Replace(" ", "+")}\"];(" +
                                 $"rel[place=city][\"addr:country\" = \"{iso}\"](area)->.city;" +
