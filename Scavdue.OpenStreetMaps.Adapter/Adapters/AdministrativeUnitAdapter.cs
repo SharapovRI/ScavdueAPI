@@ -110,7 +110,7 @@ public class AdministrativeUnitAdapter : BaseAdapter, IAdministrativeUnitAdapter
             return new List<AdministrativeUnit>();
         }
 
-        responseObject.Elements = responseObject.Elements?.Where(b => b.Tags?.Name != null && b.Tags.AdminLevel < 8).ToArray(); //TODO ограничение
+        responseObject.Elements = responseObject.Elements?.Where(b => b.Tags?.Name != null).ToArray(); //TODO ограничение
 
         foreach (var item in responseObject?.Elements)
         {

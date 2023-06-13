@@ -1,4 +1,4 @@
-﻿using System.Linq.Expressions;
+using System.Linq.Expressions;
 using AutoMapper;
 using Scavdue.Business.Interfaces;
 using Scavdue.Core.Interfaces;
@@ -118,7 +118,7 @@ public class AssessmentService : IAssessmentService
         var schoolsAvailabilityGrade = 0f;
         if (schools.Any())
         {
-            schoolsAvailabilityGrade = (populationValue / 1000 * 112) / (schools.Count() * 2000) * 10;
+            schoolsAvailabilityGrade = (float)(populationValue / 1000 * 112) / (schools.Count() * 2000) * 10;
             if (schoolsAvailabilityGrade > 10) schoolsAvailabilityGrade = 10;
         }
         grades.Add(schoolsAvailabilityGrade);
@@ -127,7 +127,7 @@ public class AssessmentService : IAssessmentService
         var kindergartensAvailabilityGrade = 0f;
         if (kindergartens.Any())
         {
-            kindergartensAvailabilityGrade = (populationValue / 1000 * 55) / (kindergartens.Count() * 140) * 10;
+            kindergartensAvailabilityGrade = (float)(populationValue / 1000 * 55) / (kindergartens.Count() * 140) * 10;
             if (kindergartensAvailabilityGrade > 10) kindergartensAvailabilityGrade = 10;
         }
         grades.Add(kindergartensAvailabilityGrade);
@@ -159,7 +159,7 @@ public class AssessmentService : IAssessmentService
         var nextStepEduSchoolsGrade = 0f;
         if (nextStepEduSchools.Any())
         {
-            nextStepEduSchoolsGrade = (populationValue / 1000 * 55) / (nextStepEduSchools.Count() * 1100) * 10;
+            nextStepEduSchoolsGrade = (float)(populationValue / 1000 * 55) / (nextStepEduSchools.Count() * 1100) * 10;
             if (nextStepEduSchoolsGrade > 10) nextStepEduSchoolsGrade = 10;
         }
         grades.Add(nextStepEduSchoolsGrade);
