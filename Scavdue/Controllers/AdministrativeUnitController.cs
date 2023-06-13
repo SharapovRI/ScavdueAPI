@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Scavdue.Business.Interfaces;
+using Scavdue.Consts;
 
 namespace Scavdue.Controllers
 {
@@ -38,7 +40,7 @@ namespace Scavdue.Controllers
             var unit = await _administrativeUnitService.GetUnitLifeIndex(unitId);
             return Ok(unit);
         }
-
+        
         [HttpGet("/AdministrativeUnits/Country/{unitName}")]
         public async Task<IActionResult> GetCountryUnit(string unitName)
         {

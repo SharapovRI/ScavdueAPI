@@ -18,6 +18,7 @@ public static class RepositoryProvider
         services.AddScoped<IEvaluationCriteriaTypeRepository, EvaluationCriteriaTypeRepository>();
         services.AddScoped<IEvaluationCriteriaRepository, EvaluationCriteriaRepository>();
         services.AddScoped<ILifeIndexRepository, LifeIndexRepository>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }

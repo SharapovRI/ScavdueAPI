@@ -10,6 +10,7 @@ public static class ServiceProvider
         services.AddScoped<IAdministrativeUnitService, AdministrativeUnitService>();
         services.AddScoped<IUnitObjectsService, UnitObjectsService>();
         services.AddScoped<IAssessmentService, AssessmentService>();
+        services.AddScoped<IAuthorizationService, AuthorizationService>();
 
         return services;
     }
