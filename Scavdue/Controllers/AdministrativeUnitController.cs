@@ -60,18 +60,25 @@ namespace Scavdue.Controllers
             return Ok(units);
         }
 
-        [HttpGet("/AdministrativeUnits/Admin/ComplexUpdate/{unitName}")]
-        public async Task<IActionResult> GetComplexUpdate(string unitName)
+        [HttpGet("/AdministrativeUnits/Moderator/ComplexUpdate/{countryName}")]
+        public async Task<IActionResult> GetComplexUpdate(string countryName)
         {
-            var message = await _administrativeUnitService.AdminComplexAdminUnits(unitName);
+            var message = await _administrativeUnitService.AdminComplexAdminUnits(countryName);
             return Ok(message);
         }
 
-        [HttpGet("/AdministrativeUnits/Admin/TestUnits/")]
+        [HttpGet("/AdministrativeUnits/Moderator/UnitUpdate/{unitId:int}")]
+        public async Task<IActionResult> GetUnitUpdate(int unitId)
+        {
+            //var message = await _administrativeUnitService.AdminComplexAdminUnits(unitName);
+            return Ok();
+        }
+
+        /*[HttpGet("/AdministrativeUnits/Admin/TestUnits/")]
         public async Task<IActionResult> GetComplexTestUnits()
         {
             var message = await _administrativeUnitService.TestUnits();
             return Ok(message);
-        }
+        }*/
     }
 }

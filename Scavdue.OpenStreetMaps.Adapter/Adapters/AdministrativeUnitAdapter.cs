@@ -92,7 +92,6 @@ public class AdministrativeUnitAdapter : BaseAdapter, IAdministrativeUnitAdapter
 
         if (admin_level < PropertyRestrictions.MAX_ADMIN_LEVEL)
         {
-            admin_level++;
             string requestUrl = URLs.OVERPASS_API_URL +
                                 $"[out:json];area[\"name:ru\"=\"{countryName.Replace(" ", "+")}\"];(" +
                                 $"rel[place=city][\"addr:country\" = \"{iso}\"](area)->.city;" +
@@ -111,7 +110,7 @@ public class AdministrativeUnitAdapter : BaseAdapter, IAdministrativeUnitAdapter
             return new List<AdministrativeUnit>();
         }
 
-        responseObject.Elements = responseObject.Elements?.Where(b => b.Tags?.Name != null && b.Tags.AdminLevel < 8).ToArray(); //TODO ограничение
+        responseObject.Elements = responseObject.Elements?.Where(b => b.Tags?.Name != null).ToArray(); //TODO ограничение
 
         foreach (var item in responseObject?.Elements)
         {
