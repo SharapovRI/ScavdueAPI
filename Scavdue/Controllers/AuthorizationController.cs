@@ -5,44 +5,41 @@ using Scavdue.Business.Models.Request;
 using Scavdue.Business.Models.Response;
 using IAuthorizationService = Scavdue.Business.Interfaces.IAuthorizationService;
 
-namespace Scavdue.Controllers
+namespace Scavdue.Controllers;
+
+[Route("[controller]")]
+[ApiController]
+public class AuthorizationController : ControllerBase
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthorizationController : ControllerBase
+    private readonly IAuthorizationService _authorizationService;
+
+    public AuthorizationController(IAuthorizationService authorizationService)
     {
-        private readonly IAuthorizationService _authorizationService;
-        private readonly IMapper _mapper;
+        _authorizationService = authorizationService;
+    }
 
-        public AuthorizationController(IMapper mapper, IAuthorizationService authorizationService)
-        {
-            _authorizationService = authorizationService;
-            _mapper = mapper;
-        }
+    [AllowAnonymous]
+    [HttpPost("authenticate")]
+    public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequestModel model)
+    {
+        var response = await _authorizationService.AuthenticateAsync(model);
 
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate([FromBody] AuthenticateRequestModel model)
-        {
-            var response = await _authorizationService.AuthenticateAsync(model);
+        if (response == null)
+            return BadRequest(new { message = "Username or password is incorrect" });
 
-            if (response == null)
-                return BadRequest(new { message = "Username or password is incorrect" });
+        return Ok(response);
+    }
 
-            return Ok(response);
-        }
+    [AllowAnonymous]
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken([FromBody] RefreshRequestModel refreshRequestModel)
+    {
+        var refreshToken = refreshRequestModel.RefreshToken;
+        var response = await _authorizationService.RefreshTokenAsync(refreshToken);
 
-        [AllowAnonymous]
-        [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshRequestModel refreshRequestModel)
-        {
-            var refreshToken = refreshRequestModel.RefreshToken;
-            var response = await _authorizationService.RefreshTokenAsync(refreshToken);
+        if (response == null)
+            return Forbid();
 
-            if (response == null)
-                return Forbid();
-
-            return Ok(response);
-        }
+        return Ok(response);
     }
 }
